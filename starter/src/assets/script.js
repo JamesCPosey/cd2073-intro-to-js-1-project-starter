@@ -52,7 +52,7 @@ function findProduct(aProductId) { //takes in productId value, iterates loop to 
           return products[i];
       }
   }
-  console.log("Oopsie!");
+  //console.log("Oopsie!");
   return undefined; // Return undefined after checking all products
 }
 
@@ -147,11 +147,11 @@ function pay(amount){
  let amountOwed = cartTotal();
  let change = 0;
   if (amountOwed === amount){
-    console.log("Thank you, have a nice day!");
+    //console.log("Thank you, have a nice day!");
     return change;
   } else {
     change = amount - amountOwed;
-    console.log("You had"+change+"left over")
+   // console.log("You had"+change+"left over")
     return change;
   }
 }
