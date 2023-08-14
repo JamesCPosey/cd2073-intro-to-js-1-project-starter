@@ -10,21 +10,21 @@ const products = [
 */
 {
   name: "cherry",
-  price: "$0.50",
+  price: 0.50,
   quantity: 0,
   productId: 55490,
   image: "../images/cherry.jpg"
 },
 {
   name: "orange",
-  price: "$0.45",
+  price: 0.45,
   quantity: 0,
   productId: 55491,
   image: "../images/orange.jpg"
 },
 {
   name: "strawberry",
-  price: "$0.60",
+  price: 0.60,
   quantity: 0,
   productId: 55492,
   image: "../images/strawberry.jpg"
@@ -43,44 +43,48 @@ const cart = [];
   - addProductToCart should then increase the product's quantity
   - if the product is not already in the cart, add it to the cart
 */
-//making findProduct function for peace of mind
+//making findProduct function for peace of mind for iteration
 
-function findProduct(aProductId){
+function findProduct(aProductId) { //takes in productId value, iterates loop to find and return product
   for (let i = 0; i < products.length; i++) {
-    if (products[i].id === aProductId) {
-      return products[i];
-    } else {
-      return undefined;
-    }
-}
+      if (products[i].productId === aProductId) {
+         // console.log("Found product!"); used for testing to make sure code is being called
+          return products[i];
+      }
+  }
+  console.log("Oopsie!");
+  return undefined; // Return undefined after checking all products
 }
 
-function addProductToCart(aProductId){
-  const existingProductInCart = false; // create boolean to check if product is in cart
-  for (let j = 0; j < this.length; j++) {
-    if (this[j].id === aProductId) {
-      existingProductInCart = true;
-      increaseQuantity(aProductId); 
-      return; // will exit immediately if the product is in the cart 
-    } else {
-        const existingProduct = findProduct(aProductId);
-        if (existingProduct) {
-            cart.push(existingProduct);
-            increaseQuantity(aProductId);
-        } else {
-            console.log("Product not found.");
-        }
-    }
+function addProductToCart(aProductId) {
+  let existingProductInCart = false;
+
+  for (let j = 0; j < cart.length; j++) {
+      if (cart[j].productId === aProductId) {
+          existingProductInCart = true;
+          increaseQuantity(aProductId);
+          return;
+      }
+  }
+
+  const existingProduct = findProduct(aProductId);
+  if (existingProduct) {
+      cart.push(existingProduct);
+      increaseQuantity(aProductId);
+  }/* else { else loop for testing, no longer need console log 
+      console.log("Product not found.");
+  }  */
 }
-}
+
+
 /* Create a function named increaseQuantity that takes in the productId as an argument
   - increaseQuantity should get the correct product based on the productId
   - increaseQuantity should then increase the product's quantity
 */
 function increaseQuantity(aProductId){
-  const existingProduct = products.find(({ productId }) => products.productId === aProductId);
+  const existingProduct = findProduct(aProductId);
   if (existingProduct) {
-      existingProduct.quantity += 1;
+      existingProduct.quantity++;
       return;
   }
 }
@@ -89,34 +93,70 @@ function increaseQuantity(aProductId){
   - decreaseQuantity should decrease the quantity of the product
   - if the function decreases the quantity to 0, the product is removed from the cart
 */
-function decreaseQuantity(products, productID){}
+function decreaseQuantity(sampleId){
+  const existingProduct = findProduct(sampleId);
+  if (existingProduct && existingProduct.quantity > 1) {
+      existingProduct.quantity--;
+      return;
+  } else {
+    removeProductFromCart(sampleId);
+    return;
+  }
+}
 /* Create a function named removeProductFromCart that takes in the productId as an argument
   - removeProductFromCart should get the correct product based on the productId
   - removeProductFromCart should update the product quantity to 0
   - removeProductFromCart should remove the product from the cart
 */
-function removeProductFromCart(products, productID){}
+function removeProductFromCart(aProductId){
+  let existingProductInCart = false;
+
+  for (let j = 0; j < cart.length; j++) {
+      if (cart[j].productId === aProductId) {
+        cart[j].quantity = 0;
+        cart.splice(j, 1);
+        return;
+      }
+  }
+  }
+
 /* Create a function named cartTotal that has no parameters
   - cartTotal should iterate through the cart to get the total of all products
   - cartTotal should return the sum of the products in the cart
 */
 function cartTotal(){
-  let fullCart = 0;
   let cartSum = 0;
-  while (fullCart < cart.length){
-    
-  }
+  for (let k = 0; k < cart.length; k++) {
+    cartSum += cart[k].price*cart[k].quantity;
+  } 
+// console.log(cartSum);
+return cartSum;
 
 }
 /* Create a function called emptyCart that empties the products from the cart */
 function emptyCart(){
-  this.splice(0);
+  for (let i = 0; i < cart.length; i++){
+    removeProductFromCart(cart[i].productId);
+  }
 }
 /* Create a function named pay that takes in an amount as an argument
   - pay will return a negative number if there is a remaining balance
   - pay will return a positive number if money should be returned to customer
 */
-function pay(amount){}/* Place stand out suggestions here (stand out suggestions can be found at the bottom of the project rubric.)*/
+function pay(amount){
+ let amountOwed = cartTotal();
+ let change = 0;
+  if (amountOwed === amount){
+    console.log("Thank you, have a nice day!");
+    return change;
+  } else {
+    change = amount - amountOwed;
+    console.log("You had"+change+"left over")
+    return change;
+  }
+}
+
+/* Place stand out suggestions here (stand out suggestions can be found at the bottom of the project rubric.)*/
 
 
 /* The following is for running unit tests. 
