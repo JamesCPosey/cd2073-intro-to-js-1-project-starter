@@ -55,25 +55,31 @@ function findProduct(aProductId) { //takes in productId value, iterates loop to 
   //console.log("Oopsie!");
   return undefined; // Return undefined after checking all products
 }
-
+function findProductInCart(aProductId) { // same code to find in cart instead of products
+  for (let i = 0; i < cart.length; i++) {
+      if (cart[i].productId === aProductId) {
+         // console.log("Found product!"); used for testing to make sure code is being called
+          return cart[i];
+      }
+  }
+  //console.log("Oopsie!");
+  return undefined; // Return undefined after checking all products
+}
 function addProductToCart(aProductId) {
-  let existingProductInCart = false;
+  let existingProductInCart = findProductInCart(aProductId);
 
-  for (let j = 0; j < cart.length; j++) {
-      if (cart[j].productId === aProductId) {
-          existingProductInCart = true;
+      if (existingProductInCart) {
           increaseQuantity(aProductId);
           return;
       }
-  }
-
-  const existingProduct = findProduct(aProductId);
+const existingProduct = findProduct(aProductId);
   if (existingProduct) {
       cart.push(existingProduct);
       increaseQuantity(aProductId);
-  }/* else { else loop for testing, no longer need console log 
-      console.log("Product not found.");
-  }  */
+      return;
+  } else { 
+     return undefined;
+  }
 }
 
 
@@ -109,14 +115,14 @@ function decreaseQuantity(sampleId){
   - removeProductFromCart should remove the product from the cart
 */
 function removeProductFromCart(aProductId){
-  let existingProductInCart = false;
-
-  for (let j = 0; j < cart.length; j++) {
-      if (cart[j].productId === aProductId) {
-        cart[j].quantity = 0;
-        cart.splice(j, 1);
+  let existingProductInCart = findProductInCart(aProductId);
+  const index = cart.findIndex(product => product.id === aProductId);
+      if (existingProductInCart) {
+        existingProductInCart.quantity = 0;
+        cart.splice(index, 1);
         return;
-      }
+      }else {
+        return undefined;
   }
   }
 
